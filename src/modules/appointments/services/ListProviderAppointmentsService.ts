@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmnetsRepository from '../repositories/IAppointmentsRepository';
 
@@ -15,6 +16,9 @@ export default class ListProviderAppointmentsService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmnetsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -31,6 +35,8 @@ export default class ListProviderAppointmentsService {
         day,
       },
     );
+
+    await this.cacheProvider.save('asd', 'asd');
 
     return appointments;
   }
